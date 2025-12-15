@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dolce Tentazione</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Nunito:wght@300;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f9f9f9;
+      --lavender-100:#510620;
+      --lavender-200:#faf0f1;
+      --lavender-300:#4b081b;
+      --accent:#430101;
+      --muted:#8c4a5a;
+      --white:#fffbfb;
+      --shadow: 0 8px 24px rgba(156,120,176,0.12);
+      --radius:14px;
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      font-family:'Nunito', system-ui, Arial;
+      margin:0;
+      background:var(--bg);
+      color:#480818;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit;}
+
+    .site{
+      max-width:1100px;
+      margin:40px auto;
+      background:var(--white);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .announce{
+      background:var(--lavender-100);
+      text-align:center;
+      padding:8px;
+      font-size:13px;
+      color:var(--white);
+    }
+
+    header{
+      padding:22px 36px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .logo{display:flex;align-items:center;gap:12px;}
+    .logo img{height:46px;border-radius:8px;}
+    .logo h1{
+      font-family:'Playfair Display';
+      margin:0;
+      font-size:32px;
+      font-weight:400;
+      color:var(--lavender-300);
+    }
+
+    nav ul{
+      display:flex;
+      gap:18px;
+      list-style:none;
+      margin:0;
+      padding:0;
+      font-weight:600;
+      color:var(--muted);
+    }
+
+    nav a{text-decoration:none;color:inherit;}
+
+    .cart-btn{
+      background:var(--accent);
+      color:white;
+      padding:8px 14px;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      position:relative;
+    }
+    .cart-count{
+      position:absolute;
+      top:-6px;
+      right:-8px;
+      background:#fff;
+      color:var(--accent);
+      font-weight:800;
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.12);
+
+      .addcart.added{
+  background:#2e7d32;
+  transform:scale(1.05);
+  transition:.25s;
+
+  /* Animación de vuelo al carrito */
+@keyframes flyToCart {
+  0% {
+    opacity: 1;
+    transform: scale(1) translate(0,0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.1) translate(var(--dx), var(--dy));
+  }
+}
+
+.flying-img {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  z-index: 10000;
+  border-radius: 8px;
+  pointer-events: none;
+  animation: flyToCart 0.8s forwards;
+}
+
+/* Botón Comprar vinotinto */
+#buyBtn {
+  background-color: #800000; /* vinotinto */
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+#buyBtn:hover {
+  background-color: #a00000;
+}
+
+}
+
+.addcart.added::after{
+  content:' ✓';
+  font-weight:800;
+}
+
+    }
+
+    /* HERO */
+    .hero{
+      background:linear-gradient(180deg,var(--lavender-100),var(--lavender-200));
+      padding:56px 36px;
+      display:grid;
+      grid-template-columns:1fr 360px;
+      gap:30px;
+      align-items:center;
+    }
+    .hero .copy h2{
+      font-family:'Playfair Display';
+      font-size:44px;
+      margin:0;
+      color:var(--accent);
+    }
+    .hero .copy p {margin-top: 8px;color: #000000;}
+    .btn{
+      display:inline-block;
+      margin-top:18px;
+      background:var(--accent);
+      color:white;
+      padding:12px 20px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:700;
+    }
+
+    .hero-photo img{
+      width:160px !important;
+      border-radius:12px;
+      display:block;
+      margin:auto;
+    }
+
+    .categories{
+      display:flex;
+      gap:18px;
+      padding:28px 36px;
+      justify-content:space-between;
+      color:white;
+    }
+    .cat{
+      flex:1;
+      background:var(--lavender-100);
+      border-radius:12px;
+      padding:28px;
+      text-align:center;
+      font-weight:700;
+      color:white;
+    }
+    .cat a{text-decoration:none;color:inherit;display:block;}
+
+    .products{padding:30px 36px;}
+    .products h3{
+      margin:0 0 8px 0;
+      font-family:'Playfair Display';
+      color:var(--lavender-300);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .card{
+      text-align:center;
+      background:#fff;
+      border-radius:12px;
+      padding:10px;
+      border:1px solid rgba(160,130,170,0.06);
+      transition:transform .18s ease, box-shadow .18s ease;
+      position:relative;
+      cursor:pointer;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    .card img{
+      width:100%;
+      height: 320px;
+      object-fit:cover;
+      border-radius:12px;
+    }
+
+    .title{margin-top:10px;font-weight:700;}
+    .price{color:var(--muted);margin-top:6px;}
+
+    .addcart{
+      display:inline-block;
+      margin-top:10px;
+      padding:8px 10px;
+      border-radius:8px;
+      background:var(--accent);
+      color:white;
+      text-decoration:none;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+    }
+
+    #cartPanel{
+      position:fixed;
+      top:0;
+      right:-420px;
+      width:420px;
+      height:100%;
+      background:var(--white);
+      box-shadow:-6px 0 30px rgba(0,0,0,0.12);
+      padding:20px;
+      transition:right .36s;
+      overflow-y:auto;
+      z-index:9999;
+    }
+    #cartPanel.open{right:0;}
+
+    #cartPanel h2{
+      margin:0 0 12px 0;
+      font-family:'Playfair Display';
+      color:var(--lavender-300);
+    }
+
+    .cart-item{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-bottom:12px;
+      padding:8px;
+      border-radius:10px;
+    }
+    .cart-item img{
+      width:64px;
+      height:64px;
+      object-fit:cover;
+      border-radius:8px;
+    }
+
+    .qty button{
+      background:#eee;
+      border:0;
+      padding:6px 8px;
+      border-radius:6px;
+      cursor:pointer;
+    }
+
+    .remove-btn{
+      background:none;
+      border:0;
+      color:#b00;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    /* MODAL DE IMAGEN */
+    #imgModal{
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,.85);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:999999;
+    }
+    #imgModal img{
+      max-width:90%;
+      max-height:90%;
+      border-radius:14px;
+      box-shadow:0 0 20px rgba(255,255,255,.2);
+    }
+
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr; padding:36px;}
+      #cartPanel{width:100%; right:-120%; max-width:420px;}
+      .grid{grid-template-columns:repeat(2,1fr);}
+    }
+    @media (max-width:600px){
+      .categories{flex-wrap:wrap;}
+      .cat{flex:1 1 45%;}
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns:1fr;}
+      header{padding:16px;}
+      .logo h1{font-size:24px;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="site">
+
+    <div class="announce">DOLCE TENTAZIONE</div>
+
+    <header>
+      <div class="logo">
+        <img src="imagen7.png" alt="logo">
+        <h1>Dolce Tentazione</h1>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#hero">Inicio</a></li>
+          <li><a href="#products">Productos</a></li>
+          <li><a href="#contactanos">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <a class="cart-btn" href="#" id="openCartBtn">
+        Carrito 🛒 <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </header>
+
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <div class="copy">
+        <h2>Bienvenido a Dolce Tentazione</h2>
+        <p>Dolce Tentazione nace del deseo de transformar cada momento en un detalle inolvidable. ✨<br>
+Cada creación está pensada para despertar emociones, endulzar historias y convertir lo cotidiano en algo mágico. 🍓💫<br>
+Porque en cada dulce hay un toque de amor, una caricia de sabor y una tentación imposible de resistir. 🍫❤️✨</p>
+        <a class="btn" href="#products">Compra ahora!</a>
+      </div>
+
+      <div class="hero-photo">
+        <img src="imagen4.png" alt="hero">
+      </div>
+    </section>
+
+    <!-- CATEGORÍAS -->
+    <div class="categories">
+      <div class="cat"><a href="#products">Regalos</a></div>
+      <div class="cat"><a href="#newArrivals">Amor y Amistad</a></div>
+      <div class="cat"><a href="#mostLoved">Halloween</a></div>
+      <div class="cat"><a href="#onSale">Navidad</a></div>
+    </div>
+
+    <!-- PRODUCTOS PRINCIPALES -->
+    <section id="products" class="products">
+      <h3>Regalos</h3>
+      <div id="mainGrid" class="grid">
+        <div class="card" data-id="p1" data-title="Fresas con chocolate" data-price="29000" data-img="imagen1.jpg">
+          <img src="imagen1.jpg" alt="Fresas con chocolate">
+          <div class="title">Fresas con chocolate</div>
+          <select class="variant">
+  <option value="60000">Presentación estándar – 60.000</option>
+  <option value="39000">Presentación estándar – $39.000</option>
+
+
+</select>
+
+          <button class="addcart">Añadir al carrito</button>
+
+        </div>
+        <div class="card" data-id="p2" data-title="Desayuno" data-price="39000" data-img="imagen2.jpeg">
+          <img src="imagen2.jpeg" alt="Desayuno">
+          <div class="title">Desayuno</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="p3" data-title="Chocolatina" data-price="15000" data-img="imagen3.jpg">
+          <img src="imagen3.jpg" alt="Chocolatina">
+          <div class="title">Chocolatina</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="p4" data-title="Oso de chocolate relleno" data-price="39000" data-img="imagen6.jpg">
+          <img src="imagen6.jpg" alt="Oso de chocolate relleno">
+          <div class="title">Oso de chocolate relleno</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="p4" data-title="Oso de chocolate relleno" data-price="39000" data-img="imagen6.jpg">
+          <img src="imagen20.jpg" alt="Oso de chocolate relleno">
+          <div class="title">detalle floral</div>
+         <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SECCION 1 -->
+    <section id="newArrivals" class="products">
+      <h3>Amor y Amistad</h3>
+      <div class="grid">
+        <div class="card" data-id="a1" data-title="Producto A1" data-price="10000" data-img="imagen-x.jpg">
+          <img src="imagen27.png" alt="">
+          <div class="title">Flores de chocolate</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="a2" data-title="Producto A2" data-price="12000" data-img="imagen-x.jpg">
+          <img src="imagen-x.jpg" alt="">
+          <div class="title">Producto A2</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="a3" data-title="Producto A3" data-price="8000" data-img="imagen-x.jpg">
+          <img src="imagen27.png" alt="">
+          <div class="title">Flores de chocolate</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="a4" data-title="Producto A4" data-price="15000" data-img="imagen-x.jpg">
+          <img src="imagen-x.jpg" alt="">
+          <div class="title">Producto A4</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCION 2 -->
+    <section id="mostLoved" class="products">
+      <h3>Halloween</h3>
+      <div class="grid">
+        <div class="card" data-id="h1" data-title="Producto H1" data-price="14000" data-img="imagen11.jpg">
+          <img src="imagen14.jpg" alt="">
+          <div class="title">Fresas con chocolate</div>
+          <select class="variant">
+  <option value="59000">Precio único – $59.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="h2" data-title="Producto H2" data-price="16000" data-img="imagen12.jpg">
+          <img src="imagen12.jpg" alt="">
+          <div class="title">Choco-oreo</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="h3" data-title="Producto H3" data-price="9000" data-img="imagen13.jpg">
+          <img src="imagen13.jpg" alt="">
+          <div class="title">Galletas</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="h4" data-title="Producto H4" data-price="11000" data-img="imagen14.jpg">
+          <img src="imagen18.jpg" alt="">
+          <div class="title">Chocolatinas</div>
+        <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+         <div class="card" data-id="h4" data-title="Producto H4" data-price="11000" data-img="imagen14.jpg">
+          <img src="imagen15.jpg" alt="">
+          <div class="title">Chocolate relleno</div>
+       <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+      </div>
+      <div class="card" data-id="h4" data-title="Producto H4" data-price="11000" data-img="imagen14.jpg">
+          <img src="imagen16.jpg" alt="">
+          <div class="title">Paletas rellenas</div>
+          <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+          </div>
+      <div class="card" data-id="h4" data-title="Producto H4" data-price="11000" data-img="imagen14.jpg">
+          <img src="imagen17.jpg" alt="">
+          <div class="title">combo x2</div>
+         <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+           </div>
+      <div class="card" data-id="h4" data-title="Producto H4" data-price="11000" data-img="imagen14.jpg">
+          <img src="imagen11.jpg" alt="">
+          <div class="title">combo x3</div>
+        <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+           </div>
+     <div class="card" data-id="h4" data-title="Producto H4" data-price="11000" data-img="imagen14.jpg">
+          <img src="imagen26.png" alt="">
+          <div class="title">Choco bombas</div>
+         <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>     
+          
+    </section>
+
+    <!-- SECCION 3 -->
+    <section id="onSale" class="products">
+      <h3>Navidad</h3>
+      <div class="grid">
+        <div class="card" data-id="n1" data-title="Producto N1" data-price="18000" data-img="imagen-x.jpg">
+          <img src="imagen23.jpg" alt="">
+          <div class="title">Paleta rellena</div>
+       <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="n2" data-title="Producto N2" data-price="20000" data-img="imagen-x.jpg">
+          <img src="imagen24.jpg" alt="">
+          <div class="title">Corazones rellenos</div>
+         <select class="variant">
+  <option value="39000">Precio único – $39.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="n3" data-title="Producto N3" data-price="22000" data-img="imagen-x.jpg">
+          <img src="imagen22.jpg" alt="">
+          <div class="title">chocolatina rellena</div>
+          <select class="variant">
+  <option value="59000">Precio único – $59.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+        <div class="card" data-id="n4" data-title="Producto N4" data-price="25000" data-img="imagen-x.jpg">
+          <img src="IMAGEN25.png" alt="">
+          <div class="title">Choco-oreo</div>
+         <select class="variant">
+  <option value="49000">Precio único – $49.000</option>
+</select>
+          <button class="addcart">Añadir al carrito</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contactanos" class="newsletter" style="padding:40px; text-align:center; background:var(--lavender-200); border-radius:14px;">
+      <h3 style="font-family:'Playfair Display'; font-size:32px; color:var(--lavender-300); margin-bottom:10px;">
+        Contáctanos
+      </h3>
+
+      <p style="color:#5b1a2b; margin-bottom:25px;">
+        ¿Tienes un pedido especial, una pregunta o deseas personalizar algo?  
+        ¡Estamos felices de ayudarte!
+      </p>
+
+      <div style="display:flex; justify-content:center; gap:25px;">
+
+        <a href="https://wa.me/573053713897" target="_blank">
+          <img src="imagen9.jpg" alt="WhatsApp" style="width:40px; height:40px; border-radius:50%;">
+        </a>
+
+        <a href="https://www.instagram.com/dolce__tentazione____" target="_blank">
+          <img src="imagen8.jpg" alt="Instagram" style="width:40px; height:40px; border-radius:50%;">
+        </a>
+
+        <a href="https://facebook.com" target="_blank">
+          <img src="imagen10.jpg" alt="Facebook" style="width:40px; height:40px; border-radius:50%;">
+        </a>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- CARRITO -->
+  <div id="cartPanel">
+    <h2>Tu carrito</h2>
+    <div id="cartItems"></div>
+
+    <div class="cart-footer">
+      <div class="subtotal"><span>Subtotal</span><span id="cartSubtotal">$0</span></div>
+      <button id="buyBtn">Comprar</button>
+      <div style="margin-top:8px;font-size:13px;color:#666;text-align:center">
+        Al comprar serás redirigida a WhatsApp
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE IMAGEN -->
+  <div id="imgModal"><img src="" alt=""></div>
+
+  <script>
+    /* === CARRITO === */
+    let cart = [];
+
+    function formatMoney(n){ return '$' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
+
+    function updateCartCount(){
+      document.getElementById('cartCount').innerText =
+        cart.reduce((s,i)=>s+i.qty,0);
+    }
+
+    function renderCartPanel(){
+      const box = document.getElementById('cartItems');
+      box.innerHTML='';
+
+      cart.forEach((item,i)=>{
+        const div=document.createElement('div');
+        div.className='cart-item';
+        div.innerHTML=`
+          <img src="${item.img}">
+          <div class="meta">
+            <b>${item.title}</b>
+            <div style="color:var(--muted)">${formatMoney(item.price)}</div>
+
+            <div class="qty" style="margin-top:8px">
+              <button class="dec" data-i="${i}">-</button>
+              <span style="min-width:28px;text-align:center;display:inline-block">${item.qty}</span>
+              <button class="inc" data-i="${i}">+</button>
+              <button class="remove-btn" data-i="${i}">Eliminar</button>
+            </div>
+          </div>
+        `;
+        box.appendChild(div);
+      });
+
+      document.querySelectorAll('.inc').forEach(b=>b.onclick=()=>{cart[b.dataset.i].qty++; save();});
+      document.querySelectorAll('.dec').forEach(b=>b.onclick=()=>{
+        const i=b.dataset.i;
+        cart[i].qty>1? cart[i].qty-- : cart.splice(i,1);
+        save();
+      });
+      document.querySelectorAll('.remove-btn').forEach(b=>b.onclick=()=>{cart.splice(b.dataset.i,1); save();});
+
+      let subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
+      document.getElementById('cartSubtotal').innerText = formatMoney(subtotal);
+
+      updateCartCount();
+    }
+
+    function save(){ renderCartPanel(); }
+
+    function flyToCartAnimation(img, target){
+  const flyingImg = img.cloneNode(true);
+  flyingImg.classList.add('flying-img');
+  document.body.appendChild(flyingImg);
+
+  const imgRect = img.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+
+  flyingImg.style.left = imgRect.left + 'px';
+  flyingImg.style.top = imgRect.top + 'px';
+  flyingImg.style.width = imgRect.width + 'px';
+  flyingImg.style.height = imgRect.height + 'px';
+
+  flyingImg.style.setProperty('--dx', (targetRect.left - imgRect.left) + 'px');
+  flyingImg.style.setProperty('--dy', (targetRect.top - imgRect.top) + 'px');
+
+  flyingImg.addEventListener('animationend', ()=> flyingImg.remove());
+}
+
+function addToCart(card){
+  const id = card.dataset.id;
+  const title = card.dataset.title;
+  const img = card.dataset.img;
+  const select = card.querySelector('.variant');
+  if(!select) return alert('Este producto no tiene opciones');
+  
+  const price = Number(select.value);
+  const variantText = select.options[select.selectedIndex].text;
+  const cartId = id + '_' + price;
+  const exist = cart.find(i => i.cartId === cartId);
+
+  if(exist) exist.qty++;
+  else cart.push({cartId,id,title:`${title} (${variantText})`,price,qty:1,img});
+
+  save();
+  openPanel();
+
+  // Animación
+  flyToCartAnimation(card.querySelector('img'), document.getElementById('openCartBtn'));
+}
+
+
+    document.querySelectorAll('.addcart').forEach(btn=>{
+      btn.onclick = (e)=> addToCart(e.target.closest('.card'));
+    });
+
+    const panel=document.getElementById('cartPanel');
+    const openCartBtn=document.getElementById('openCartBtn');
+    openCartBtn.onclick=(e)=>{e.preventDefault();openPanel();};
+
+    function openPanel(){ panel.classList.add('open'); }
+    function closePanel(){ panel.classList.remove('open'); }
+
+    document.addEventListener('click',(e)=>{
+      if(window.innerWidth>900){
+        if(!panel.contains(e.target) && !openCartBtn.contains(e.target)){
+          closePanel();
+        }
+      }
+    });
+
+    document.getElementById('buyBtn').onclick=()=>{
+      if(cart.length===0){ alert('Tu carrito está vacío'); return; }
+
+      let msg = "¡Hola! Quiero hacer este pedido:%0A";
+      let total=0;
+
+      cart.forEach(i=>{
+        msg += `- ${i.title} x${i.qty} (${formatMoney(i.price)})%0A`;
+        total += i.price*i.qty;
+      });
+
+      msg += `%0ASubtotal: ${formatMoney(total)}%0A`;
+
+      window.open(`https://wa.me/573053713897?text=${msg}`,'_blank');
+    };
+
+   
+    save();
+  </script>
+</body>
+</html>
